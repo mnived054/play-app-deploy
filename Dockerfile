@@ -1,4 +1,4 @@
-FROM apache/beam_java17_sdk
+FROM apache/beam_java17_sdk AS builder
 #openjdk:11
 ARG SBT_VERSION=1.9.9
 
@@ -14,15 +14,19 @@ RUN mkdir /working/ && \
     rm -r /working/ && \
     sbt sbtVersion
 
-RUN mkdir -p/app
-
-ADD . /app
 
 WORKDIR /app
 
-#EXPOSE 9090 //uncommand it for web application
+COPY . /app
 
-RUN cd /app && sbt compile
+RUN sbt clean stage
+
+FROM openjdk:17-slim
+WORKDIR /app
+
+COPY --from=builder /app/target/universal/stage /app
+
+EXPOSE 9000
 
 # CMD sbt run
-CMD ["sbt","run", "play-app-deploy","-Dhttp.port=9000"]
+CMD ["/bin/sh","-c", "bin/play-app-deploy -Dhttp.port=${PORT:-9000}"]
