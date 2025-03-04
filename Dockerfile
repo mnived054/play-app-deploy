@@ -14,7 +14,7 @@ RUN mkdir /working/ && \
     rm -r /working/ && \
     sbt sbtVersion
 
-RUN mkdir -p/app
+RUN mkdir /app
 
 ADD . /app
 
