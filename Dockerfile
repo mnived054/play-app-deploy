@@ -28,5 +28,5 @@ COPY --from=builder /app/target/universal/stage /app
 
 EXPOSE 9000
 
-# CMD sbt run
+# CMD sbt run #klk
 CMD ["/bin/sh","-c", "bin/play-app-deploy -Dhttp.port=${PORT:-9000}"]
