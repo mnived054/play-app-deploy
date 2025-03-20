@@ -75,4 +75,13 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
         Future.successful(BadRequest("Missing or invalid signature header"))
     }
   }
+  def verifyToken: Action[AnyContent] = Action.async { request =>
+    val parms = request.queryString.map{ case (k,v)=> k-> v.mkString}
+    val token = "12345"
+    if(parms.get("hub.verify_token").contains(token)){
+      Future.successful(Ok(parms.getOrElse("hub.challenge","abc")))
+    }else{
+      throw new Exception("No access token")
+    }
+  }
 }
