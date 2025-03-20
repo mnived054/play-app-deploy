@@ -24,7 +24,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * a path of `/`.
    */
   // Your secret key from Meta (replace with your actual key)
-  private val SECRET_KEY = "b08a836b8bce1be3f0fc9bfeb2c85e1d"
+  private val SECRET_KEY = "cfbdf629e535369305ee6bc2bec53ef2"
   private val SIGNATURE_HEADER = "X-Hub-Signature-256" // Check Meta's docs for the exact header name
   private val HMAC_SHA256 = "HmacSHA256"
 
