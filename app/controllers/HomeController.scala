@@ -50,6 +50,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     // Get the raw body as a string
     val rawBody = request.body.asBytes().map(_.utf8String).getOrElse("")
 
+    println(s"The Raw Body is $rawBody")
+
     // Get the signature from the header
     val receivedSignatureOpt = request.headers.get(SIGNATURE_HEADER)
     println(s"The recieved is ${receivedSignatureOpt.get}")
