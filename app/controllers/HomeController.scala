@@ -79,6 +79,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
   def verifyToken: Action[AnyContent] = Action.async { request =>
     val parms = request.queryString.map{ case (k,v)=> k-> v.mkString}
+    println(s"The params are $parms")
     val token = "12345"
     if(parms.get("hub.verify_token").contains(token)){
       Future.successful(Ok(parms.getOrElse("hub.challenge","abc")))
