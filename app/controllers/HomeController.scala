@@ -24,8 +24,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * a path of `/`.
    */
   // Your secret key from Meta (replace with your actual key)
-  private val SECRET_KEY = "cfbdf629e535369305ee6bc2bec53ef2"
-  private val SIGNATURE_HEADER = "X-Hub-Signature-256" // Check Meta's docs for the exact header name
+  private val SECRET_KEY = "8dad36834c058d541af87506dd427611"
+  private val SIGNATURE_HEADER = "X-Hub-Signature-256"
   private val HMAC_SHA256 = "HmacSHA256"
 
   def index() = Action { implicit request: Request[AnyContent] =>
@@ -47,12 +47,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
 
   def validateLead() = Action.async(parse.raw) { request =>
-    // Get the raw body as a string
     val rawBody = request.body.asBytes().map(_.utf8String).getOrElse("")
 
     println(s"The Raw Body is $rawBody")
 
-    // Get the signature from the header
     val receivedSignatureOpt = request.headers.get(SIGNATURE_HEADER)
     println(s"The recieved is ${receivedSignatureOpt.get}")
 
@@ -61,19 +59,15 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
         val receivedHash = signature.stripPrefix("sha256=")
         val calculatedHash = calculateHmac(rawBody, SECRET_KEY)
 
-        // Compare the signatures
         if (calculatedHash == receivedHash) {
-          // Signature matches! Process the lead
           val jsonBody = Json.parse(rawBody)
           println(s"Valid lead received: $jsonBody")
           Future.successful(Ok("Lead validated"))
         } else {
-          // Signature doesn’t match
           Future.successful(Unauthorized("Invalid signature"))
         }
 
       case _ =>
-        // No signature header or wrong format
         Future.successful(BadRequest("Missing or invalid signature header"))
     }
   }
