@@ -40,9 +40,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     val secretKey = new SecretKeySpec(secret.getBytes("UTF-8"), HMAC_SHA256)
     val mac = Mac.getInstance(HMAC_SHA256)
     mac.init(secretKey)
-    val hashBytes = mac.doFinal(payload.getBytes("UTF-8"))
-    val cgh=hashBytes.map("%02x".format(_)).mkString // Convert to hex string
-    println(s"The generated is $cgh")
+    val hashBytes = mac.doFinal(payload.getBytes("UTF-8"))val cgh=hashBytes.map("%02x".format(_)).mkString // Convert to hex string
+    println(s"Thesignatured is $cgh")
     cgh
   }
 
