@@ -76,7 +76,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     if(parms.get("hub.verify_token").contains(token)){
       Future.successful(Ok(parms.getOrElse("hub.challenge","abc")))
     }else{
-      throw new Exception("No access token")
+      throw new Exception("No access Tken")
     }
   }
 }
