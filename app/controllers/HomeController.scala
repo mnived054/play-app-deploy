@@ -49,8 +49,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def validateLead() = Action.async(parse.raw) { request =>
     val rawBody = request.body.asBytes().map(_.utf8String).getOrElse("")
 
-    println(s"The Raw Body is $rawBody")
-
     val receivedSignatureOpt = request.headers.get(SIGNATURE_HEADER)
     println(s"The recieved is ${receivedSignatureOpt.get}")
 
